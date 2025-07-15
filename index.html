@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feliz Cumpleaños</title>
+  <style>
+    body {
+      background: radial-gradient(ellipse at 60% 20%, #a64ca6 40%, #4b0074 100%);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: background 1s;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .estrella {
+      position: fixed;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0.7;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .meteorito {
+      position: fixed;
+      top: -80px;
+      width: 36px;
+      height: 36px;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0.92;
+      background: radial-gradient(circle at 60% 40%, #fff 70%, #ffd6ff 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 24px 8px #ffd6ff, 0 0 0 0 #fff;
+      animation: cola-meteorito 0.7s linear infinite;
+    }
+
+    .meteorito::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 80%;
+      width: 6px;
+      height: 60px;
+      background: linear-gradient(180deg, #ffd6ff 0%, #fff 60%, transparent 100%);
+      border-radius: 50%;
+      transform: translateX(-50%);
+      opacity: 0.7;
+      filter: blur(2px);
+    }
+
+    @keyframes cola-meteorito {
+      0% { box-shadow: 0 0 18px 6px #ffd6ff, 0 0 0 0 #fff; }
+      100% { box-shadow: 0 0 32px 16px #ffd6ff, 0 0 0 0 #fff; }
+    }
+
+    .nombre {
+      font-family: 'Cursive', cursive;
+      font-size: 220px;
+      font-style: italic;
+      color: #fff;
+      opacity: 0;
+      transition: opacity 1.5s;
+      text-align: center;
+      z-index: 5;
+    }
+
+    .mensaje {
+      font-size: 35px;
+      color: #f8f8f8;
+      margin-top: 10px;
+      letter-spacing: 1px;
+      opacity: 0;
+      transition: opacity 1.5s;
+    }
+
+    .visible {
+      opacity: 1;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="estrellas-container"></div>
+  <div id="meteoritos-container"></div>
+  <div class="nombre" id="nombre">Nana</div>
+  <div class="mensaje" id="mensaje">¡Feliz cumpleaños!</div>
+
+  <script>
+    // Estrellas fijas
+    function crearEstrellas() {
+      const cont = document.getElementById('estrellas-container');
+      for (let i = 0; i < 90; i++) {
+        const estrella = document.createElement('div');
+        estrella.className = 'estrella';
+        const size = Math.random() * 2.2 + 0.8;
+        estrella.style.width = size + 'px';
+        estrella.style.height = size + 'px';
+        estrella.style.left = (Math.random() * 100) + 'vw';
+        estrella.style.top = (Math.random() * 100) + 'vh';
+        estrella.style.opacity = (Math.random() * 0.5 + 0.5).toFixed(2);
+        cont.appendChild(estrella);
+      }
+    }
+
+    crearEstrellas();
+
+    // Meteoritos animados
+    function crearMeteorito() {
+      const meteorito = document.createElement('div');
+      meteorito.className = 'meteorito';
+      const left = Math.random() * (window.innerWidth - 60) + 10;
+      meteorito.style.left = left + 'px';
+      const size = Math.random() * 16 + 24;
+      meteorito.style.width = size + 'px';
+      meteorito.style.height = size + 'px';
+
+      const dur = Math.random() * 1.2 + 1.2;
+      const rot = (Math.random() - 0.5) * 60;
+
+      meteorito.animate([
+        { transform: `translateY(0) rotate(${rot}deg)`, opacity: 0.95 },
+        { transform: `translateY(${window.innerHeight + 120}px) rotate(${rot + 60}deg)`, opacity: 0.2 }
+      ], {
+        duration: dur * 1000,
+        easing: 'ease-in',
+        fill: 'forwards'
+      });
+
+      document.getElementById('meteoritos-container').appendChild(meteorito);
+      setTimeout(() => {
+        if (meteorito.parentNode) meteorito.parentNode.removeChild(meteorito);
+      }, dur * 1000);
+    }
+
+    setInterval(() => {
+      if (document.hidden) return;
+      if (Math.random() < 0.7) crearMeteorito();
+    }, 500);
+
+    window.onload = function() {
+      setTimeout(function() {
+        document.getElementById('nombre').classList.add('visible');
+        setTimeout(function() {
+          document.getElementById('mensaje').classList.add('visible');
+        }, 700);
+      }, 300);
+    };
+
+    // Al hacer clic, cambiar fondo y desaparecer
+    document.body.onclick = function () {
+      document.body.style.transition = 'background 0.8s, opacity 0.8s';
+      document.body.style.background = '#fff6b3';
+      document.getElementById('nombre').style.transition = 'opacity 0.8s, transform 0.8s';
+      document.getElementById('mensaje').style.transition = 'opacity 0.8s, transform 0.8s';
+      document.getElementById('nombre').style.opacity = '0';
+      document.getElementById('nombre').style.transform = 'translateY(-40px) scale(0.95)';
+      document.getElementById('mensaje').style.opacity = '0';
+      document.getElementById('mensaje').style.transform = 'translateY(40px) scale(0.95)';
+      setTimeout(function () {
+        document.body.style.opacity = '0';
+      }, 500);
+      setTimeout(function () {
+        window.location.href = 'cartaFelizCumple.html';
+      }, 1100);
+    };
+  </script>
+</body>
+</html>

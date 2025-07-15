@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feliz Cumple</title>
+  <audio id="musica-fondo" src="resources/Stalker's Tango.mp3" autoplay hidden></audio>
+  <style>
+    body {
+      margin: 0;
+      background-color: #1a1a1a;
+      color: #f2f2f2;
+      font-family: 'Georgia', serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .carta {
+      background-color: #2a2a2a;
+      padding: 40px;
+      border: 2px solid #a00;
+      border-radius: 8px;
+      max-width: 700px;
+      width: 90%;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .carta h2 {
+      margin-top: 0;
+      font-family: 'Courier New', monospace;
+      color: #ff4d4d;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    .carta p {
+      font-size: 18px;
+      line-height: 1.6;
+      letter-spacing: 0.4px;
+    }
+
+    .imagen-carta {
+      margin-top: 30px;
+      width: 120px;
+      height: 120px;
+      border: 2px solid #999;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      background-color: #111;
+      display: inline-block;
+    }
+
+    .imagen-carta img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(20%);
+      transition: filter 0.4s;
+    }
+
+    .imagen-carta img:hover {
+      filter: none;
+    }
+
+    .particula-flotante {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0.7;
+      z-index: 1;
+      animation: flotacion 8s linear infinite;
+    }
+
+    .particula-flotante:nth-child(1) { 
+      left: 10%; 
+      animation-delay: 0s;
+      animation-duration: 12s;
+    }
+    .particula-flotante:nth-child(2) { 
+      left: 20%; 
+      animation-delay: 2s;
+      animation-duration: 10s;
+    }
+    .particula-flotante:nth-child(3) { 
+      left: 30%; 
+      animation-delay: 4s;
+      animation-duration: 14s;
+    }
+    .particula-flotante:nth-child(4) { 
+      left: 50%; 
+      animation-delay: 1s;
+      animation-duration: 11s;
+    }
+    .particula-flotante:nth-child(5) { 
+      left: 70%; 
+      animation-delay: 3s;
+      animation-duration: 13s;
+    }
+    .particula-flotante:nth-child(6) { 
+      left: 80%; 
+      animation-delay: 5s;
+      animation-duration: 9s;
+    }
+
+    @keyframes flotacion {
+      0% { 
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% { 
+        opacity: 0.7;
+      }
+      90% { 
+        opacity: 0.7;
+      }
+      100% { 
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .vela {
+      position: absolute;
+      width: 8px;
+      height: 60px;
+      background: linear-gradient(to bottom, #8B4513 0%, #A0522D 100%);
+      border-radius: 2px;
+      z-index: 1;
+    }
+
+    .vela:nth-child(7) { bottom: 20%; left: 5%; }
+    .vela:nth-child(8) { bottom: 10%; left: 8%; }
+    .vela:nth-child(9) { bottom: 15%; left: 10%; }
+
+    .llama {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 12px;
+      height: 18px;
+      background: radial-gradient(circle at 50% 100%, #ff6b35 0%, #ff8c00 40%, #ffd700 80%);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      animation: parpadeo-llama 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes parpadeo-llama {
+      0% { 
+        transform: translateX(-50%) scale(0.9);
+        opacity: 0.8;
+      }
+      100% { 
+        transform: translateX(-50%) scale(1.1);
+        opacity: 1;
+      }
+    }
+
+    .parpadeo {
+      animation: parpadeo 1.8s infinite;
+    }
+
+    @keyframes parpadeo {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .orquidea {
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 60px;
+      height: 60px;
+      z-index: 3;
+      transform: rotate(15deg);
+    }
+
+    .petalo {
+      position: absolute;
+      width: 20px;
+      height: 30px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.9;
+      box-shadow: 0 0 6px rgba(255,255,255,0.5);
+    }
+
+    .petalo:nth-child(1) { top: 15px; left: 20px; transform: rotate(0deg); }
+    .petalo:nth-child(2) { top: 0px; left: 10px; transform: rotate(-40deg); }
+    .petalo:nth-child(3) { top: 0px; left: 30px; transform: rotate(40deg); }
+    .petalo:nth-child(4) { top: 30px; left: 10px; transform: rotate(-20deg); }
+    .petalo:nth-child(5) { top: 30px; left: 30px; transform: rotate(20deg); }
+
+    .centro {
+      position: absolute;
+      top: 20px;
+      left: 24px;
+      width: 12px;
+      height: 12px;
+      background: #c2b280;
+      border-radius: 50%;
+      box-shadow: 0 0 5px #fff;
+    }
+
+    .fantasma {
+      position: absolute;
+      width: 60px;
+      height: 80px;
+      z-index: 1;
+      animation: flotar-fantasma 6s ease-in-out infinite;
+      top: 30%;
+      left: 85%;
+    }
+
+    .cuerpo-fantasma {
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 60%, rgba(255, 255, 255, 0.5) 100%);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      position: relative;
+      filter: blur(0.5px);
+    }
+
+    .cola-fantasma {
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 25px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 0 0 50% 50%;
+      animation: ondular 2s ease-in-out infinite;
+    }
+
+    .cola-fantasma::before {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 10px;
+      width: 12px;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: ondular 2s ease-in-out infinite 0.3s;
+    }
+
+    .cola-fantasma::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      right: 10px;
+      width: 12px;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: ondular 2s ease-in-out infinite 0.6s;
+    }
+
+    .ojos-fantasma {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 20px;
+    }
+
+    .ojo {
+      position: absolute;
+      width: 8px;
+      height: 12px;
+      background: #333;
+      border-radius: 50%;
+      animation: parpadeo-ojos 4s ease-in-out infinite;
+    }
+
+    .ojo:first-child { left: 8px; }
+    .ojo:last-child { right: 8px; }
+
+    .boca-fantasma {
+      position: absolute;
+      top: 35px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 12px;
+      height: 8px;
+      background: #333;
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+
+    @keyframes flotar-fantasma {
+      0%, 100% { 
+        transform: translateY(0px) translateX(0px);
+        opacity: 0.8;
+      }
+      25% { 
+        transform: translateY(-15px) translateX(-20px);
+        opacity: 0.9;
+      }
+      50% { 
+        transform: translateY(-10px) translateX(-40px);
+        opacity: 0.7;
+      }
+      75% { 
+        transform: translateY(-20px) translateX(-20px);
+        opacity: 0.9;
+      }
+    }
+
+    @keyframes ondular {
+      0%, 100% { transform: translateX(-50%) scaleY(1); }
+      50% { transform: translateX(-50%) scaleY(0.8); }
+    }
+
+    @keyframes parpadeo-ojos {
+      0%, 90%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.1); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Partículas flotantes -->
+  <div class="particula-flotante"></div>
+  <div class="particula-flotante"></div>
+  <div class="particula-flotante"></div>
+  <div class="particula-flotante"></div>
+  <div class="particula-flotante"></div>
+  <div class="particula-flotante"></div>
+
+  <!-- Velas decorativas -->
+  <div class="vela">
+    <div class="llama"></div>
+  </div>
+  <div class="vela">
+    <div class="llama"></div>
+  </div>
+  <div class="vela">
+    <div class="llama"></div>
+  </div>
+
+  <!-- Fantasma flotante -->
+  <div class="fantasma">
+    <div class="cuerpo-fantasma">
+      <div class="ojos-fantasma">
+        <div class="ojo"></div>
+        <div class="ojo"></div>
+      </div>
+      <div class="boca-fantasma"></div>
+    </div>
+    <div class="cola-fantasma"></div>
+  </div>
+
+  <!-- Carta -->
+  <div class="carta parpadeo">
+    <!-- Orquídea decorativa -->
+    <div class="orquidea">
+      <div class="petalo"></div>
+      <div class="petalo"></div>
+      <div class="petalo"></div>
+      <div class="petalo"></div>
+      <div class="petalo"></div>
+      <div class="centro"></div>
+    </div>
+
+    <h2>Para ti...</h2>
+    <p id="contenido-carta">
+      Hola que tal :D esperando que te guste este pequeño presente, te deseo un Feliz Cumpleaños :D, ya te estas poniendo viejita muejejeje
+      :D que todas tus metas se cumplan, espero seguir escuchando más historias de terror tuyas muejejeje, ojala no te agarro el cuco. Haz de cuenta como
+      si tuvieramos un pastel entonces :D sopla las velas y pide un deseo, espero que se cumpla, sin más, te deseo lo mejor y espero que el estilo te agrade
+      tampoco soy muy experto en esto, pero hice lo mejor que pude, perdón tuve que stalkear tu perfil para sacar varios detalles y no quise hacer algo
+      cliche pero bueno sin más disfruta. 
+    </p>
+
+    <!-- Imagen ahora debajo del texto -->
+    <div class="imagen-carta">
+      <img src="resources/Nana.jpeg" alt="Orquídea">
+    </div>
+  </div>
+
+  <script>
+    // Repetir la música al finalizar (por compatibilidad extra)
+    const audio = document.getElementById('musica-fondo');
+    if (audio) {
+        audio.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        });
+    }
+  </script>
+</body>
+</html>
